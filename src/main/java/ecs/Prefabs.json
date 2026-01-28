@@ -1,0 +1,14 @@
+{
+  "test": {
+    "components": {
+      "Position": {"x": 5, "y":  5},
+      "Velocity": {"vx": 1, "vy": 0},
+      "PrefabLink": {"prefabId":  "another"}
+    }
+  },
+  "another": {
+    "components": {
+      "Velocity": {"vx": 5, "vy": 1}
+    }
+  }
+}

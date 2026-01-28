@@ -26,7 +26,6 @@ public class Game {
 //        if(frames % 10 == 0) {
 //
 //        }
-
     }
 
     private void init() {

@@ -14,7 +14,9 @@ public class PrefabSystem extends BaseSystem {
         for(Entity e : entities) {
             if(e.hasComponent(PrefabLink.class)) {
                 PrefabLink pl = e.getComponent(PrefabLink.class);
-                em.createEntity(pl.prefabId);
+                if(pl.ready) {
+                    em.createEntity(pl.prefabId);
+                }
             }
         }
     }

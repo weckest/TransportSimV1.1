@@ -88,6 +88,7 @@ public class PrefabRegistry {
         componentParsers.put("PrefabLink", data -> {
             PrefabLink pl = new PrefabLink();
             pl.prefabId = data.get("prefabId").asText();
+            pl.ready = false;
             return pl;
         });
     }

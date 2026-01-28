@@ -23,9 +23,11 @@ public class Game {
         frames++;
         em.update(0);
 
-//        if(frames % 10 == 0) {
-//
-//        }
+        if(frames % 10 == 0) {
+            em.getEntitiesWithComponents(PrefabLink.class).forEach(e -> {
+                e.getComponent(PrefabLink.class).ready = true;
+            });
+        }
     }
 
     private void init() {
@@ -38,8 +40,8 @@ public class Game {
 
 
         em.addSystem(new OutputSystem());
-//        em.addSystem(new PrefabSystem());
-        em.addSystem(new MovementSystem());
+        em.addSystem(new PrefabSystem());
+//        em.addSystem(new MovementSystem());
 
 //        OutputSystem s = new OutputSystem();
 //        em.addSystem(s);

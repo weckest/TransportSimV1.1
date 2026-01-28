@@ -6,4 +6,11 @@ public class Active implements Component {
     public String toString() {
         return "Active {" + active + "}";
     }
+
+    @Override
+    public Component clone() {
+        Active a = new Active();
+        a.active = this.active;
+        return a;
+    }
 }

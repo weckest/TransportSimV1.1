@@ -7,5 +7,5 @@ import java.util.Map;
 
 public class Prefab {
     public Map<Class<?>, Component> components = new HashMap<>();
-
+    
 }

@@ -65,7 +65,7 @@ public class PrefabRegistry {
                 Component component = parser.parse(data);
                 prefab.components.put(component.getClass(), component);
             } else {
-                System.out.println("Unknown component: " + componentName);
+                System.err.println("Unknown component: " + componentName);
             }
         }
     }

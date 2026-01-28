@@ -3,7 +3,8 @@
     "components": {
       "Position": {"x": 5, "y":  5},
       "Velocity": {"vx": 1, "vy": 0},
-      "PrefabLink": {"prefabId":  "another"}
+      "PrefabLink": {"prefabId":  "another"},
+      "PrefabLink": {"prefabId":  "test"}
     }
   },
   "another": {

@@ -1,6 +1,7 @@
 import ecs.EntityManager;
 import ecs.EventManager;
 import ecs.PrefabRegistry;
+import ecs.ProductTypeRegistry;
 import ecs.components.*;
 import ecs.events.*;
 import ecs.systems.*;
@@ -9,11 +10,13 @@ public class Game {
 
     private EntityManager em;
     private PrefabRegistry pf;
+    private ProductTypeRegistry ptr;
     private int frames;
 
     public Game() {
         pf = new PrefabRegistry();
-        em = new EntityManager(pf);
+        ptr = new ProductTypeRegistry();
+        em = new EntityManager(pf, ptr);
         frames = 0;
         init();
     }
@@ -32,9 +35,10 @@ public class Game {
         try {
             System.out.println("Loading Prefabs...");
             pf.loadPrefabs("file:src/main/java/ecs/Prefabs.json");
+            ptr.loadProducts("file:src/main/java/ecs/Products.json");
             System.out.println("Prefabs Loaded...");
 
-            System.out.println("Creating initial Entities");
+            System.out.println("Creating initial Entities...");
             em.createEntity(pf.get("factory"));
             em.createEntity(pf.get("hardware store"));
             System.out.println("Entities Loaded...");

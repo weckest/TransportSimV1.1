@@ -17,8 +17,9 @@ public class EntityManager {
     private PrefabRegistry pr;
     private ProductTypeRegistry ptr;
 
-    public EntityManager(PrefabRegistry pr) {
+    public EntityManager(PrefabRegistry pr, ProductTypeRegistry ptr) {
         this.pr = pr;
+        this.ptr = ptr;
     }
 
     public Entity createEntity() {

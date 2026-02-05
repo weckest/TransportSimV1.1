@@ -10,7 +10,7 @@ public class EntityFactory {
         Entity e = em.createEntity();
 
         for(Component c : prefab.components.values()) {
-            e.addComponent(c.clone());
+            e.addComponent(ComponentCloner.copy(c));
         }
 
         return e;

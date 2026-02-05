@@ -7,10 +7,9 @@ public class Active implements Component {
         return "Active {" + active + "}";
     }
 
-    @Override
-    public Component clone() {
-        Active a = new Active();
-        a.active = this.active;
-        return a;
+    public Active() {}
+
+    public Active(Active active) {
+        this.active = active.active;
     }
 }

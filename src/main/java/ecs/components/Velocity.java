@@ -7,11 +7,10 @@ public class Velocity implements Component {
         return "Velocity {vX: " + vx + ", vY: " + vy + "}";
     }
 
-    @Override
-    public Component clone() {
-        Velocity v = new Velocity();
-        v.vx = this.vx;
-        v.vy = this.vy;
-        return v;
+    public Velocity() {}
+
+    public Velocity(Velocity velocity) {
+        this.vx = velocity.vx;
+        this.vy = velocity.vy;
     }
 }

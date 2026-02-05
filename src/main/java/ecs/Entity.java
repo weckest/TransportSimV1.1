@@ -1,6 +1,7 @@
 package ecs;
 
 import ecs.components.Active;
+import ecs.components.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,10 @@ public class Entity {
         return (T) components.get(type);
     }
 
+    public <T> void removeComponent(Class<T> type) {
+        components.remove(type);
+    }
+
     public boolean hasComponent(Class<?> type) {
         return components.containsKey(type);
     }
@@ -44,5 +49,11 @@ public class Entity {
 
     public Set<Class<?>> getComponentTypes() {
         return components.keySet();
+    }
+
+    public void printComponents() {
+        components.forEach((c, o) -> {
+            System.out.println(o);
+        });
     }
 }

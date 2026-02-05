@@ -7,12 +7,11 @@ public class Position implements Component {
         return "Position {X: " + x + ", Y: " + y + "}";
     }
 
-    @Override
-    public Component clone() {
-        Position p = new Position();
-        p.x = this.x;
-        p.y = this.y;
-        return p;
+    public Position() {}
+
+    public Position(Position position) {
+        this.x = position.x;
+        this.y = position.y;
     }
 }
 

@@ -1,15 +1,45 @@
 {
-  "test": {
+  "factory": {
     "components": {
-      "Position": {"x": 5, "y":  5},
-      "Velocity": {"vx": 1, "vy": 0},
-      "PrefabLink": {"prefabId":  "another"},
-      "PrefabLink": {"prefabId":  "test"}
+      "Inventory": {
+        "inventory": {
+          "wood": 2
+        }
+      },
+      "Producer": {
+        "profitMargin": 0.35
+      },
+      "Recipe": {
+        "input": {
+          "wood": 1
+        },
+        "output": {
+          "metal": 1,
+          "wood": 2
+        },
+        "cooldown": 3,
+        "time": 1
+      },
+      "Wallet": {
+        "money": 50
+      }
     }
   },
-  "another": {
+  "hardware store": {
     "components": {
-      "Velocity": {"vx": 5, "vy": 1}
+      "Inventory": {
+        "inventory": {}
+      },
+      "Consumer": {},
+      "Wallet": {
+        "money": 50
+      },
+      "StockList": {
+        "stocklist": {
+          "wood": 5,
+          "metal": 10
+        }
+      }
     }
   }
 }

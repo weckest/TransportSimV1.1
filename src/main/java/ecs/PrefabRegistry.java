@@ -88,8 +88,53 @@ public class PrefabRegistry {
         componentParsers.put("PrefabLink", data -> {
             PrefabLink pl = new PrefabLink();
             pl.prefabId = data.get("prefabId").asText();
-            pl.ready = false;
             return pl;
+        });
+
+        componentParsers.put("Inventory", data -> {
+            Inventory i = new Inventory();
+            data.get("inventory").fields().forEachRemaining(f -> {
+                i.inventory.put(f.getKey(), f.getValue().asInt());
+            });
+            return i;
+        });
+
+        componentParsers.put("Producer", data -> {
+            Producer p = new Producer();
+            p.profitMargin = data.get("profitMargin").asDouble();
+            return p;
+        });
+
+        componentParsers.put("Recipe", data -> {
+            Recipe r = new Recipe();
+            data.get("input").fields().forEachRemaining(f -> {
+                r.input.put(f.getKey(), f.getValue().asInt());
+            });
+            data.get("output").fields().forEachRemaining(f -> {
+                r.output.put(f.getKey(), f.getValue().asInt());
+            });
+            r.cooldown = data.get("cooldown").asInt();
+            r.time = data.get("time").asInt();
+            return r;
+        });
+
+        componentParsers.put("Consumer", data -> {
+            Consumer c = new Consumer();
+            return c;
+        });
+
+        componentParsers.put("Wallet", data -> {
+            Wallet w = new Wallet();
+            w.money = data.get("money").asDouble();
+            return w;
+        });
+
+        componentParsers.put("StockList", data -> {
+            StockList sl = new StockList();
+            data.get("stocklist").fields().forEachRemaining(f -> {
+                sl.stockList.put(f.getKey(), f.getValue().asInt());
+            });
+            return sl;
         });
     }
 

@@ -1,16 +1,21 @@
 package ecs;
 
+import ecs.components.Active;
 import ecs.components.Component;
+import ecs.events.PrintEvent;
 import ecs.systems.BaseSystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class EntityManager {
     private int nextId = 0;
     private final List<Entity> entities = new LinkedList<>();
-    private final List<BaseSystem> systems = new LinkedList<>();
+    private final Map<Class<? extends BaseSystem>, BaseSystem> systems = new HashMap<>();
     private PrefabRegistry pr;
+    private ProductTypeRegistry ptr;
 
     public EntityManager(PrefabRegistry pr) {
         this.pr = pr;
@@ -24,6 +29,7 @@ public class EntityManager {
 
     public Entity createEntity(Prefab prefab) {
         Entity e = EntityFactory.createFromPrefab(this, prefab);
+        EventManager.emit("Print", new PrintEvent(e.getId()));
         return e;
     }
 
@@ -34,6 +40,7 @@ public class EntityManager {
         } catch(Exception exception) {
             System.err.println(exception);
         }
+
         return e;
     }
 
@@ -44,14 +51,7 @@ public class EntityManager {
     public List<Entity> getEntitiesWithComponents(Class<?>... comps) {
         List<Entity> out = new LinkedList<>();
         for(Entity e : entities) {
-            boolean good = true;
-            for (Class<?> comp : comps) {
-                if(!e.hasComponent(comp)) {
-                    good = false;
-                    break;
-                }
-            }
-            if(good) {
+            if(e.getComponent(Active.class).active && e.hasComponents(comps)) {
                 out.add(e);
             }
         }
@@ -63,20 +63,20 @@ public class EntityManager {
     }
 
     public void addSystem(BaseSystem s) {
-        systems.add(s);
+        systems.put(s.getClass(), s);
+    }
+
+    public ProductTypeRegistry getProductTypeRegistry() {
+        return ptr;
     }
 
 
-    public <T> void activateSystem(T type) {
-        for(BaseSystem s : systems) {
-            if(s.getClass().equals(type)) {
-                s.setActive(true);
-            }
-        }
+    public <T extends BaseSystem> void activateSystem(T type) {
+        systems.get(type).setActive(true);
     }
 
     public void update(float dt) {
-        for(BaseSystem s : systems) {
+        for(BaseSystem s : systems.values()) {
             if(s.isActive()) {
                 s.update(this);
             }

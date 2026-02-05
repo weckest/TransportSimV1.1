@@ -7,10 +7,9 @@ public class Output implements Component {
         return output;
     }
 
-    @Override
-    public Component clone() {
-        Output o = new Output();
-        o.output = this.output;
-        return o;
+    public Output() {}
+
+    public Output(Output output) {
+        this.output = output.output;
     }
 }

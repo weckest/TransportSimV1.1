@@ -1,10 +1,11 @@
-import ecs.Entity;
 import ecs.EntityManager;
+import ecs.EventManager;
 import ecs.PrefabRegistry;
 import ecs.components.*;
-import ecs.systems.MovementSystem;
+import ecs.events.*;
 import ecs.systems.OutputSystem;
 import ecs.systems.PrefabSystem;
+import ecs.systems.ProducerSystem;
 
 public class Game {
 
@@ -22,25 +23,34 @@ public class Game {
     public void update() {
         frames++;
         em.update(0);
-
-        if(frames % 10 == 0) {
-            em.getEntitiesWithComponents(PrefabLink.class).forEach(e -> {
-                e.getComponent(PrefabLink.class).ready = true;
-            });
-        }
     }
 
     private void init() {
+        OutputSystem os = new OutputSystem();
+        EventManager.subscribe("Print", e -> {
+            os.printEntity(em.getEntity(((PrintEvent)e).entityId));
+        });
+
         try {
+            System.out.println("Loading Prefabs...");
             pf.loadPrefabs("file:src/main/java/ecs/Prefabs.json");
-            em.createEntity(pf.get("test"));
+            System.out.println("Prefabs Loaded...");
+
+            System.out.println("Creating initial Entities");
+            em.createEntity(pf.get("factory"));
+            em.createEntity(pf.get("hardware store"));
+            System.out.println("Entities Loaded...");
         } catch(Exception e) {
             System.err.println(e);
         }
 
+        System.out.println("Adding Systems...");
+        em.addSystem(new ProducerSystem());
 
-        em.addSystem(new OutputSystem());
-        em.addSystem(new PrefabSystem());
+        System.out.println("Systems Added...");
+
+
+//        em.addSystem(new PrefabSystem());
 //        em.addSystem(new MovementSystem());
 
 //        OutputSystem s = new OutputSystem();

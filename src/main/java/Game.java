@@ -3,9 +3,7 @@ import ecs.EventManager;
 import ecs.PrefabRegistry;
 import ecs.components.*;
 import ecs.events.*;
-import ecs.systems.OutputSystem;
-import ecs.systems.PrefabSystem;
-import ecs.systems.ProducerSystem;
+import ecs.systems.*;
 
 public class Game {
 
@@ -46,6 +44,10 @@ public class Game {
 
         System.out.println("Adding Systems...");
         em.addSystem(new ProducerSystem());
+        em.addSystem(new StockListSystem());
+
+        //Event Systems
+        em.addSystem(new BuyRequestSystem());
 
         System.out.println("Systems Added...");
 

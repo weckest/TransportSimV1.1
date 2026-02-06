@@ -37,8 +37,19 @@ public class ProducerSystem extends BaseSystem {
                 }
 
                 r.time = r.cooldown;
-                //once we make the new products add a print event to the entity to print the new inventory
-                EventManager.emit("Print", new PrintEvent(e.getId()));
+
+
+                //after making an item. make a sell request of the products that are not needed for the recipe
+                SellRequest sr = new SellRequest();
+                for(String item: i.inventory.keySet()) {
+                    if(!RecipeSystem.needsItem(r, item)) {
+                        sr.sell.put(item, i.inventory.get(item));
+                    }
+                }
+                //dont add the component if we arent selling anything
+                if(!sr.sell.isEmpty()) {
+                    e.addComponent(sr);
+                }
             }
 
 

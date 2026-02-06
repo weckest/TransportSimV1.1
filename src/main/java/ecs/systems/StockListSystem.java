@@ -29,7 +29,6 @@ public class StockListSystem extends BaseSystem {
             }
             if(!br.buy.isEmpty()) {
                 e.addComponent(br);
-                EventManager.emit("Print", new PrintEvent(e.getId()));
             }
         }
     }

@@ -3,7 +3,6 @@ package ecs.systems;
 import ecs.Entity;
 import ecs.EntityManager;
 import ecs.EventManager;
-import ecs.ProductTypeRegistry;
 import ecs.components.*;
 import ecs.events.*;
 
@@ -24,12 +23,13 @@ public class BuyRequestSystem extends BaseSystem {
             }
 
             for(String product: br.buy.keySet()) {
-                bo.buy.putIfAbsent(product, br.buy.get(product));
-                bo.price += br.buy.get(product) * em.getProductTypeRegistry().getProductType(product).price;
+                bo.buy.put(product, br.buy.get(product));
+                bo.price += bo.buy.get(product) * em.getProductTypeRegistry().getProductType(product).price;
             }
 
             if(bo.age == 0) {
                 e.addComponent(bo);
+                e.removeComponent(BuyRequest.class);
                 EventManager.emit("Print", new PrintEvent(e.getId()));
             }
         }

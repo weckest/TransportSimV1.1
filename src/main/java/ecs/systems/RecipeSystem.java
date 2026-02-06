@@ -2,6 +2,7 @@ package ecs.systems;
 
 import ecs.EntityManager;
 import ecs.components.*;
+import ecs.data.ProductType;
 
 public class RecipeSystem extends BaseSystem {
     @Override
@@ -18,5 +19,15 @@ public class RecipeSystem extends BaseSystem {
             }
         }
         return flag;
+    }
+
+    public static boolean needsItem(Recipe r, String item) {
+        for(String i: r.input.keySet()) {
+            if(i.equals(item)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

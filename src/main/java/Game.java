@@ -52,14 +52,10 @@ public class Game {
 
         //Event Systems
         em.addSystem(new BuyRequestSystem());
+        em.addSystem(new SellRequestSystem());
 
         System.out.println("Systems Added...");
 
-
-//        em.addSystem(new PrefabSystem());
-//        em.addSystem(new MovementSystem());
-
-//        OutputSystem s = new OutputSystem();
-//        em.addSystem(s);
+        System.out.println("Initialized...");
     }
 }

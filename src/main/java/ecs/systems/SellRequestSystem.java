@@ -18,18 +18,13 @@ public class SellRequestSystem extends BaseSystem {
             SellOrder so;
             if(e.hasComponent(SellOrder.class)) {
                 so = e.getComponent(SellOrder.class);
-                so.age++;
             } else {
                 so = new SellOrder();
             }
 
             for(String item: sr.sell.keySet()) {
-                Integer value = so.sell.put(item, sr.sell.get(item));
-                if(value != null) {
-                    so.price += (so.sell.get(item) - value) * em.getProductTypeRegistry().getProductType(item).price * (1 + p.profitMargin);
-                } else {
-                    so.price += so.sell.get(item) * em.getProductTypeRegistry().getProductType(item).price * (1 + p.profitMargin);
-                }
+                so.sell.put(item, sr.sell.get(item));
+                so.price.put(item, so.sell.get(item) * em.getProductTypeRegistry().getProductType(item).price * (1 + p.profitMargin));
                 sr.sell.remove(item);
             }
 
@@ -40,7 +35,7 @@ public class SellRequestSystem extends BaseSystem {
             if(so.age == 0) {
                 e.addComponent(so);
             }
-            EventManager.emit("Print", new PrintEvent(e.getId()));
+//            EventManager.emit("Print", new PrintEvent(e.getId()));
         }
     }
 }

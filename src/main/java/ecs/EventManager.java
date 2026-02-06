@@ -20,6 +20,10 @@ public class EventManager {
 
     public static void emit(String eventType, Event event) {
         List<Consumer<Event>> listeners = subscriptions.get(eventType);
+        if(listeners == null) {
+            System.err.println("No Listeners for Event: " + eventType);
+            return;
+        }
         for(Consumer<Event> consumer: listeners) {
             consumer.accept(event);
         }

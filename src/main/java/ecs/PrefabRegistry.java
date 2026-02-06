@@ -136,6 +136,12 @@ public class PrefabRegistry {
             });
             return sl;
         });
+
+        componentParsers.put("Patience", data -> {
+           Patience p = new Patience();
+           p.patience = data.get("patience").asInt();
+           return p;
+        });
     }
 
     public void printPrefabs() {

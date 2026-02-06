@@ -17,20 +17,19 @@ public class BuyRequestSystem extends BaseSystem {
             BuyOrder bo;
             if(e.hasComponent(BuyOrder.class)) {
                 bo = e.getComponent(BuyOrder.class);
-                bo.age++;
             } else {
                 bo = new BuyOrder();
             }
 
             for(String product: br.buy.keySet()) {
                 bo.buy.put(product, br.buy.get(product));
-                bo.price += bo.buy.get(product) * em.getProductTypeRegistry().getProductType(product).price;
+                bo.price.put(product, bo.buy.get(product) * em.getProductTypeRegistry().getProductType(product).price);
             }
 
             if(bo.age == 0) {
                 e.addComponent(bo);
                 e.removeComponent(BuyRequest.class);
-                EventManager.emit("Print", new PrintEvent(e.getId()));
+//                EventManager.emit("Print", new PrintEvent(e.getId()));
             }
         }
     }

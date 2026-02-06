@@ -24,6 +24,10 @@ public class Game {
     public void update() {
         frames++;
         em.update(0);
+
+        em.getEntitiesWithComponents(BuyOrder.class).forEach(e -> {
+            EventManager.emit("Print", new PrintEvent(e.getId()));
+        });
     }
 
     private void init() {
@@ -39,7 +43,7 @@ public class Game {
             System.out.println("Prefabs Loaded...");
 
             System.out.println("Creating initial Entities...");
-            em.createEntity(pf.get("factory"));
+//            em.createEntity(pf.get("factory"));
             em.createEntity(pf.get("hardware store"));
             System.out.println("Entities Loaded...");
         } catch(Exception e) {
@@ -49,10 +53,14 @@ public class Game {
         System.out.println("Adding Systems...");
         em.addSystem(new ProducerSystem());
         em.addSystem(new StockListSystem());
+        em.addSystem(new TransportSystem());
 
         //Event Systems
         em.addSystem(new BuyRequestSystem());
         em.addSystem(new SellRequestSystem());
+        em.addSystem(new BuyOrderSystem());
+        em.addSystem(new SellOrderSystem());
+        em.addSystem(new OrderSystem());
 
         System.out.println("Systems Added...");
 

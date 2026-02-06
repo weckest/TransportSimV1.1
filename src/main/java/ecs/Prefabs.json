@@ -7,7 +7,7 @@
         }
       },
       "Producer": {
-        "profitMargin": 0.35
+        "profitMargin": -0.05
       },
       "Recipe": {
         "input": {
@@ -22,6 +22,9 @@
       },
       "Wallet": {
         "money": 50
+      },
+      "Patience": {
+        "patience": 3
       }
     }
   },
@@ -39,6 +42,9 @@
           "wood": 5,
           "metal": 10
         }
+      },
+      "Patience": {
+        "patience": 1
       }
     }
   }

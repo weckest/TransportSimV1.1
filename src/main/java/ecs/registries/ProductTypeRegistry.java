@@ -1,25 +1,28 @@
-package ecs;
+package ecs.registries;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ecs.data.ProductType;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ProductTypeRegistry {
-    public Map<String, ProductType> productTypes = new HashMap<>();
+public class ProductTypeRegistry extends Registry<ProductType> {
 
     public void addProductType(ProductType productType) {
-        productTypes.put(productType.tag, productType);
+        add(productType.tag, productType);
     }
 
     public ProductType getProductType(String type) {
-        return productTypes.get(type);
+        try {
+            return get(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void loadProducts(String path) throws IOException {
@@ -28,7 +31,7 @@ public class ProductTypeRegistry {
         Iterator<Map.Entry<String, JsonNode>> products = jsonNode.fields();
 
         products.forEachRemaining(p -> {
-            productTypes.put(p.getKey(), new ProductType(p.getKey(), p.getValue().asDouble()));
+            add(p.getKey(), new ProductType(p.getKey(), p.getValue().asDouble()));
         });
     }
 }

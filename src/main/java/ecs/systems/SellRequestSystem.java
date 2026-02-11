@@ -5,6 +5,7 @@ import ecs.EntityManager;
 import ecs.EventManager;
 import ecs.components.*;
 import ecs.events.*;
+import ecs.registries.ProductTypeRegistry;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class SellRequestSystem extends BaseSystem {
 
             for(String item: sr.sell.keySet()) {
                 so.sell.put(item, sr.sell.get(item));
-                so.price.put(item, so.sell.get(item) * em.getProductTypeRegistry().getProductType(item).price * (1 + p.profitMargin));
+                so.price.put(item, so.sell.get(item) * em.getRegistry(ProductTypeRegistry.class).getProductType(item).price * (1 + p.profitMargin));
                 sr.sell.remove(item);
             }
 

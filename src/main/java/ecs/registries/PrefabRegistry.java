@@ -1,7 +1,9 @@
-package ecs;
+package ecs.registries;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ecs.ComponentParser;
+import ecs.Prefab;
 import ecs.components.*;
 
 import java.io.IOException;
@@ -12,26 +14,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class PrefabRegistry {
-    private final Map<String, Prefab> prefabs;
+public class PrefabRegistry extends Registry<Prefab> {
     private ObjectMapper mapper;
     private JsonNode jsonNode;
-    Map<String, ComponentParser> componentParsers;
+    private Map<String, ComponentParser> componentParsers;
 
     public PrefabRegistry() {
-        prefabs = new HashMap<>();
         componentParsers = new HashMap<>();
-
         init();
-
     }
 
-    public Prefab get(String id) throws Exception{
-        Prefab p = prefabs.get(id);
-        if(p == null) {
-            throw new Exception("Prefab: \"" + id + "\" does not exist");
-        }
-        return p;
+    public void addParser(String id, ComponentParser parser) {
+        componentParsers.put(id, parser);
     }
 
     public void loadPrefabs(String path) throws IOException {
@@ -50,7 +44,7 @@ public class PrefabRegistry {
 
     public void loadPrefab(Map.Entry<String, JsonNode> entry) {
         Prefab prefab = new Prefab();
-        this.prefabs.put(entry.getKey(), prefab);
+        add(entry.getKey(), prefab);
         JsonNode prefabNode = entry.getValue();
         JsonNode componentsNode = prefabNode.get("components");
 
@@ -70,7 +64,7 @@ public class PrefabRegistry {
         }
     }
 
-    public void init() {
+    private void init() {
         componentParsers.put("Position", data -> {
             Position p = new Position();
             p.x = (float) data.get("x").asDouble();
@@ -145,7 +139,7 @@ public class PrefabRegistry {
     }
 
     public void printPrefabs() {
-        for(Prefab p : prefabs.values()) {
+        for(Prefab p : getValues()) {
             System.out.println(p.components);
         }
     }

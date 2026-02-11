@@ -5,6 +5,7 @@ import ecs.EntityManager;
 import ecs.EventManager;
 import ecs.components.*;
 import ecs.events.*;
+import ecs.registries.ProductTypeRegistry;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class BuyRequestSystem extends BaseSystem {
 
             for(String product: br.buy.keySet()) {
                 bo.buy.put(product, br.buy.get(product));
-                bo.price.put(product, bo.buy.get(product) * em.getProductTypeRegistry().getProductType(product).price);
+                bo.price.put(product, bo.buy.get(product) * em.getRegistry(ProductTypeRegistry.class).getProductType(product).price);
             }
 
             if(bo.age == 0) {

@@ -1,8 +1,7 @@
 import ecs.EntityManager;
 import ecs.EventManager;
-import ecs.PrefabRegistry;
-import ecs.ProductTypeRegistry;
-import ecs.components.*;
+import ecs.registries.PrefabRegistry;
+import ecs.registries.ProductTypeRegistry;
 import ecs.events.*;
 import ecs.systems.*;
 
@@ -16,18 +15,21 @@ public class Game {
     public Game() {
         pf = new PrefabRegistry();
         ptr = new ProductTypeRegistry();
-        em = new EntityManager(pf, ptr);
+        em = new EntityManager();
+        em.addRegistry(pf);
+        em.addRegistry(ptr);
         frames = 0;
         init();
     }
 
     public void update() {
         frames++;
+        System.out.println("Frame: " + frames);
         em.update(0);
 
-        em.getEntitiesWithComponents(BuyOrder.class).forEach(e -> {
-            EventManager.emit("Print", new PrintEvent(e.getId()));
-        });
+//        em.getEntitiesWithComponents(BuyOrder.class).forEach(e -> {
+//            EventManager.emit("Print", new PrintEvent(e.getId()));
+//        });
     }
 
     private void init() {
@@ -43,7 +45,7 @@ public class Game {
             System.out.println("Prefabs Loaded...");
 
             System.out.println("Creating initial Entities...");
-//            em.createEntity(pf.get("factory"));
+            em.createEntity(pf.get("factory"));
             em.createEntity(pf.get("hardware store"));
             System.out.println("Entities Loaded...");
         } catch(Exception e) {
@@ -58,8 +60,8 @@ public class Game {
         //Event Systems
         em.addSystem(new BuyRequestSystem());
         em.addSystem(new SellRequestSystem());
-        em.addSystem(new BuyOrderSystem());
-        em.addSystem(new SellOrderSystem());
+//        em.addSystem(new BuyOrderSystem());
+//        em.addSystem(new SellOrderSystem());
         em.addSystem(new OrderSystem());
 
         System.out.println("Systems Added...");

@@ -1,9 +1,7 @@
 package ecs.systems;
 
 import ecs.EntityManager;
-import ecs.ProductTypeRegistry;
 import ecs.components.Inventory;
-import ecs.data.ProductType;
 
 public class InventorySystem extends BaseSystem {
     @Override

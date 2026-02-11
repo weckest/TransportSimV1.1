@@ -1,8 +1,10 @@
 package ecs;
 
 import ecs.components.Active;
-import ecs.components.Component;
 import ecs.events.PrintEvent;
+import ecs.registries.PrefabRegistry;
+import ecs.registries.ProductTypeRegistry;
+import ecs.registries.Registry;
 import ecs.systems.BaseSystem;
 
 import java.util.HashMap;
@@ -14,13 +16,7 @@ public class EntityManager {
     private int nextId = 0;
     private final List<Entity> entities = new LinkedList<>();
     private final Map<Class<? extends BaseSystem>, BaseSystem> systems = new HashMap<>();
-    private PrefabRegistry pr;
-    private ProductTypeRegistry ptr;
-
-    public EntityManager(PrefabRegistry pr, ProductTypeRegistry ptr) {
-        this.pr = pr;
-        this.ptr = ptr;
-    }
+    private final Map<Class<? extends Registry>, Registry> registries = new HashMap<>();
 
     public Entity createEntity() {
         Entity e = new Entity(nextId++);
@@ -37,7 +33,7 @@ public class EntityManager {
     public Entity createEntity(String prefabId) {
         Entity e = null;
         try {
-            e = createEntity(pr.get(prefabId));
+            e = createEntity(getRegistry(PrefabRegistry.class).get(prefabId));
         } catch(Exception exception) {
             System.err.println(exception);
         }
@@ -63,17 +59,23 @@ public class EntityManager {
         return entities.get(i);
     }
 
-    public void addSystem(BaseSystem s) {
-        systems.put(s.getClass(), s);
+    public void addSystem(BaseSystem system) {
+        systems.put(system.getClass(), system);
     }
 
-    public ProductTypeRegistry getProductTypeRegistry() {
-        return ptr;
-    }
+
 
 
     public <T extends BaseSystem> void activateSystem(T type) {
         systems.get(type).setActive(true);
+    }
+
+    public <T> T getRegistry(Class<T> type) {
+        return (T) registries.get(type);
+    }
+
+    public void addRegistry(Registry registry) {
+        registries.put(registry.getClass(), registry);
     }
 
     public void update(float dt) {

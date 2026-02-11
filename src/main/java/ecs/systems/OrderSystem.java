@@ -8,7 +8,6 @@ import ecs.events.PrintEvent;
 import ecs.events.TransportRequest;
 
 import java.util.List;
-import java.util.Map;
 
 public class OrderSystem extends BaseSystem {
     @Override
@@ -49,6 +48,7 @@ public class OrderSystem extends BaseSystem {
                                 sellWallet.money += totalPrice;
 
                                 tr.products.put(buyItem, amount);
+                                System.out.println("Orders matched and products moving");
 
                                 //change the values of the buy and sell orders
                                 so.sell.put(buyItem, so.sell.get(buyItem) - amount);
@@ -72,7 +72,7 @@ public class OrderSystem extends BaseSystem {
                     if(so.sell.isEmpty()) {
                         sellEntity.removeComponent(SellOrder.class);
                     }
-//                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()));
+                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()));
                 }
             }
             //remove items from the buy order if they are no longer buying any

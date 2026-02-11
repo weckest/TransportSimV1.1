@@ -63,9 +63,6 @@ public class EntityManager {
         systems.put(system.getClass(), system);
     }
 
-
-
-
     public <T extends BaseSystem> void activateSystem(T type) {
         systems.get(type).setActive(true);
     }

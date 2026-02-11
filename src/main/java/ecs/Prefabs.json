@@ -17,14 +17,14 @@
           "metal": 1,
           "wood": 2
         },
-        "cooldown": 3,
-        "time": 1
+        "cooldown": 2,
+        "time": 0
       },
       "Wallet": {
         "money": 50
       },
       "Patience": {
-        "patience": 3
+        "patience": 1
       }
     }
   },

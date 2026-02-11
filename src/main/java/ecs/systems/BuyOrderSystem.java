@@ -17,12 +17,10 @@ public class BuyOrderSystem extends BaseSystem {
             Patience p = e.getComponent(Patience.class);
             bo.age++;
             if(bo.age % p.patience == 0) {
-                System.out.println("Updating price");
                 for(String item: bo.price.keySet()) {
                     double newPrice = bo.price.get(item) * 1.1;
-                    System.out.println(item + " " + newPrice);
                     bo.price.put(item, newPrice);
-                    EventManager.emit("Print", new PrintEvent(e.getId()));
+//                    EventManager.emit("Print", new PrintEvent(e.getId()), "BuyOrderSystem: ");
                 }
             }
         }

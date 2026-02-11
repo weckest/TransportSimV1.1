@@ -2,7 +2,9 @@ package ecs.systems;
 
 import ecs.Entity;
 import ecs.EntityManager;
+import ecs.EventManager;
 import ecs.components.*;
+import ecs.events.PrintEvent;
 
 import java.util.List;
 
@@ -16,8 +18,9 @@ public class SellOrderSystem extends BaseSystem {
             so.age++;
             if(so.age % p.patience == 0) {
                 for(String item: so.sell.keySet()) {
-                    double newPrice = so.price.get(item) * 0.99;
+                    double newPrice = so.price.get(item) * 0.9;
                     so.price.put(item, newPrice);
+                    EventManager.emit("Print", new PrintEvent(e.getId()), "SellOrderSystem: ");
                 }
             }
         }

@@ -49,6 +49,7 @@ public class ProducerSystem extends BaseSystem {
                 //dont add the component if we arent selling anything
                 if(!sr.sell.isEmpty()) {
                     e.addComponent(sr);
+                    EventManager.emit("Print", new PrintEvent(e.getId()), "ProducerSystem: ");
                 }
             }
 

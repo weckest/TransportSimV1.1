@@ -60,8 +60,8 @@ public class Game {
         //Event Systems
         em.addSystem(new BuyRequestSystem());
         em.addSystem(new SellRequestSystem());
-//        em.addSystem(new BuyOrderSystem());
-//        em.addSystem(new SellOrderSystem());
+        em.addSystem(new BuyOrderSystem());
+        em.addSystem(new SellOrderSystem());
         em.addSystem(new OrderSystem());
 
         System.out.println("Systems Added...");

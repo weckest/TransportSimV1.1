@@ -18,6 +18,11 @@ public class EventManager {
         subscriptions.put(eventType, callbacks);
     }
 
+    public static void emit(String eventType, Event event, String caller) {
+        System.out.print(caller);
+        emit(eventType, event);
+    }
+
     public static void emit(String eventType, Event event) {
         List<Consumer<Event>> listeners = subscriptions.get(eventType);
         if(listeners == null) {

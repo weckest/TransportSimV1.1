@@ -59,7 +59,7 @@ public class OrderSystem extends BaseSystem {
                         }
                     }
                     if(!tr.products.isEmpty()) {
-                        EventManager.emit("Transport", tr);
+                        EventManager.emit("Transport", tr, "Transport Request From OrderSystem\n");
                         break;
                     }
                     //remove items from the sell order if they are no longer selling any
@@ -72,7 +72,7 @@ public class OrderSystem extends BaseSystem {
                     if(so.sell.isEmpty()) {
                         sellEntity.removeComponent(SellOrder.class);
                     }
-                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()));
+                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()), "OrderSystem");
                 }
             }
             //remove items from the buy order if they are no longer buying any
@@ -85,7 +85,7 @@ public class OrderSystem extends BaseSystem {
             if(bo.buy.isEmpty()) {
                 buyEntity.removeComponent(BuyOrder.class);
             }
-            EventManager.emit("Print", new PrintEvent(buyEntity.getId()));
+            EventManager.emit("Print", new PrintEvent(buyEntity.getId()),"OrderSystem");
         }
     }
 }

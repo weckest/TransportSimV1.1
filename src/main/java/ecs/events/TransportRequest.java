@@ -10,5 +10,10 @@ public class TransportRequest implements Event {
     public int destinationId;
     public Map<String, Integer> products = new HashMap<>();
     public EntityManager em;
+    public int eta;
+
+    public String toString() {
+        return "TransportRequest: {eta: " + eta + ", sourceId: " + sourceId + ", destinationId: " + destinationId + "}";
+    }
 
 }

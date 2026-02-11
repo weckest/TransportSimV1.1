@@ -47,5 +47,10 @@
         "patience": 3
       }
     }
+  },
+  "transporter": {
+    "components": {
+      "Transporter": {}
+    }
   }
 }

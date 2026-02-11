@@ -136,6 +136,11 @@ public class PrefabRegistry extends Registry<Prefab> {
            p.patience = data.get("patience").asInt();
            return p;
         });
+
+        componentParsers.put("Transporter", data -> {
+            Transporter t = new Transporter();
+            return t;
+        });
     }
 
     public void printPrefabs() {

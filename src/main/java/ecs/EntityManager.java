@@ -26,7 +26,6 @@ public class EntityManager {
 
     public Entity createEntity(Prefab prefab) {
         Entity e = EntityFactory.createFromPrefab(this, prefab);
-        EventManager.emit("Print", new PrintEvent(e.getId()));
         return e;
     }
 
@@ -34,11 +33,16 @@ public class EntityManager {
         Entity e = null;
         try {
             e = createEntity(getRegistry(PrefabRegistry.class).get(prefabId));
+            return e;
         } catch(Exception exception) {
             System.err.println(exception);
         }
 
         return e;
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
     }
 
     public List<Entity> getEntities() {

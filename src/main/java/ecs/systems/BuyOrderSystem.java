@@ -20,8 +20,8 @@ public class BuyOrderSystem extends BaseSystem {
                 for(String item: bo.price.keySet()) {
                     double newPrice = bo.price.get(item) * 1.1;
                     bo.price.put(item, newPrice);
-//                    EventManager.emit("Print", new PrintEvent(e.getId()), "BuyOrderSystem: ");
                 }
+                EventManager.emit("Print", new PrintEvent(e.getId()), "BuyOrderSystem: ");
             }
         }
     }

@@ -34,7 +34,7 @@ public class OrderSystem extends BaseSystem {
                         int sellAmount = so.sell.get(sellItem);
                         double sellPrice = so.price.get(sellItem) / sellAmount;
 
-                        //check for lower sell price (add negotiations)
+                        //check for lower sell price (add negotiations in the future)
                         if(sellPrice < buyPrice) {
                             double price = (buyPrice + sellPrice) / 2;
                             int amount = Math.min(buyAmount, sellAmount);
@@ -48,7 +48,7 @@ public class OrderSystem extends BaseSystem {
                                 sellWallet.money += totalPrice;
 
                                 tr.products.put(buyItem, amount);
-                                System.out.println("Orders matched and products moving");
+                                System.out.println("Orders matched and products moving. BuyPrice: $" + buyPrice + " SellPrice: $" + sellPrice);
 
                                 //change the values of the buy and sell orders
                                 so.sell.put(buyItem, so.sell.get(buyItem) - amount);
@@ -72,7 +72,7 @@ public class OrderSystem extends BaseSystem {
                     if(so.sell.isEmpty()) {
                         sellEntity.removeComponent(SellOrder.class);
                     }
-                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()), "OrderSystem");
+                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()), "OrderSystem Sell: ");
                 }
             }
             //remove items from the buy order if they are no longer buying any
@@ -85,7 +85,7 @@ public class OrderSystem extends BaseSystem {
             if(bo.buy.isEmpty()) {
                 buyEntity.removeComponent(BuyOrder.class);
             }
-            EventManager.emit("Print", new PrintEvent(buyEntity.getId()),"OrderSystem");
+            EventManager.emit("Print", new PrintEvent(buyEntity.getId()),"OrderSystem Buy: ");
         }
     }
 }

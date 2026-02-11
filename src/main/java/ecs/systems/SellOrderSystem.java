@@ -20,8 +20,8 @@ public class SellOrderSystem extends BaseSystem {
                 for(String item: so.sell.keySet()) {
                     double newPrice = so.price.get(item) * 0.9;
                     so.price.put(item, newPrice);
-                    EventManager.emit("Print", new PrintEvent(e.getId()), "SellOrderSystem: ");
                 }
+                EventManager.emit("Print", new PrintEvent(e.getId()), "SellOrderSystem: ");
             }
         }
     }

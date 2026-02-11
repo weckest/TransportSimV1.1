@@ -26,10 +26,6 @@ public class Game {
         frames++;
         System.out.println("Frame: " + frames);
         em.update(0);
-
-//        em.getEntitiesWithComponents(BuyOrder.class).forEach(e -> {
-//            EventManager.emit("Print", new PrintEvent(e.getId()));
-//        });
     }
 
     private void init() {
@@ -55,6 +51,7 @@ public class Game {
         System.out.println("Adding Systems...");
         em.addSystem(new ProducerSystem());
         em.addSystem(new StockListSystem());
+
         em.addSystem(new TransportSystem());
 
         //Event Systems

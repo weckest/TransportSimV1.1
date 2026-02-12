@@ -15,6 +15,11 @@ public class BuyRequestSystem extends BaseSystem {
         List<Entity> entities = em.getEntitiesWithComponents(BuyRequest.class);
         for(Entity e: entities) {
             BuyRequest br = e.getComponent(BuyRequest.class);
+            Consumer c = e.getComponent(Consumer.class);
+            if(c == null) {
+                e.removeComponent(BuyRequest.class);
+                continue;
+            }
             BuyOrder bo;
             if(e.hasComponent(BuyOrder.class)) {
                 bo = e.getComponent(BuyOrder.class);
@@ -23,8 +28,10 @@ public class BuyRequestSystem extends BaseSystem {
             }
 
             for(String product: br.buy.keySet()) {
-                bo.buy.put(product, br.buy.get(product));
-                bo.price.put(product, bo.buy.get(product) * em.getRegistry(ProductTypeRegistry.class).getProductType(product).price);
+                if(!bo.buy.containsKey(product)) {
+                    bo.buy.put(product, br.buy.get(product));
+                    bo.price.put(product, bo.buy.get(product) * em.getRegistry(ProductTypeRegistry.class).getProductType(product).price * (1 - c.discount));
+                }
             }
 
             if(bo.age == 0) {

@@ -7,15 +7,41 @@
         }
       },
       "Producer": {
-        "profitMargin": 0.1
+        "profitMargin": 0.35
+      },
+      "Recipe": {
+        "input": {},
+        "output": {
+          "wood": 1
+        },
+        "cooldown": 2,
+        "time": 0
+      },
+      "Wallet": {
+        "money": 50
+      },
+      "Patience": {
+        "patience": 3
+      }
+    }
+  },
+  "metal factory": {
+    "components": {
+      "Inventory": {
+        "inventory": {}
+      },
+      "Producer": {
+        "profitMargin": 0.25
+      },
+      "Consumer": {
+        "discount": 0.2
       },
       "Recipe": {
         "input": {
-          "wood": 1
+          "wood": 2
         },
         "output": {
-          "metal": 1,
-          "wood": 2
+          "metal": 1
         },
         "cooldown": 2,
         "time": 0
@@ -33,7 +59,9 @@
       "Inventory": {
         "inventory": {}
       },
-      "Consumer": {},
+      "Consumer": {
+        "discount": 0.25
+      },
       "Wallet": {
         "money": 50
       },

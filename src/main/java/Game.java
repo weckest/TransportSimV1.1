@@ -42,7 +42,11 @@ public class Game {
 
             System.out.println("Creating initial Entities...");
             em.createEntity(pf.get("factory"));
+            EventManager.emit("Print", new PrintEvent(em.getEntity(0).getId()));
+            em.createEntity(pf.get("metal factory"));
+            EventManager.emit("Print", new PrintEvent(em.getEntity(1).getId()));
             em.createEntity(pf.get("hardware store"));
+            EventManager.emit("Print", new PrintEvent(em.getEntity(2).getId()));
             System.out.println("Entities Loaded...");
         } catch(Exception e) {
             System.err.println(e);

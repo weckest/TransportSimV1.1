@@ -20,6 +20,6 @@ public class InventorySystem extends BaseSystem {
     }
 
     public static int getAmount(Inventory i, String productType) {
-        return i.inventory.get(productType);
+        return i.inventory.getOrDefault(productType, 0);
     }
 }

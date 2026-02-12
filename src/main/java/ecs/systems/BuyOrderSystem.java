@@ -4,6 +4,7 @@ import ecs.Entity;
 import ecs.EntityManager;
 import ecs.EventManager;
 import ecs.components.*;
+import ecs.events.BuyRequest;
 import ecs.events.PrintEvent;
 
 import java.util.List;

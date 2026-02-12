@@ -114,6 +114,7 @@ public class PrefabRegistry extends Registry<Prefab> {
 
         componentParsers.put("Consumer", data -> {
             Consumer c = new Consumer();
+            c.discount = data.get("discount").asDouble();
             return c;
         });
 

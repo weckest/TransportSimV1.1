@@ -7,6 +7,7 @@ import ecs.components.*;
 import ecs.events.PrintEvent;
 import ecs.events.TransportRequest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class OrderSystem extends BaseSystem {
@@ -25,12 +26,17 @@ public class OrderSystem extends BaseSystem {
                 for(Entity sellEntity: sellEntities) {
                     SellOrder so = sellEntity.getComponent(SellOrder.class);
 
+                    if(so == null) {
+                        continue;
+                    }
+
                     TransportRequest tr = new TransportRequest();
                     tr.sourceId = sellEntity.getId();
                     tr.destinationId = buyEntity.getId();
                     tr.em = em;
 
-                    for(String sellItem: so.sell.keySet()) {
+                    if(so.sell.containsKey(buyItem)) {
+                        String sellItem = buyItem;
                         int sellAmount = so.sell.get(sellItem);
                         double sellPrice = so.price.get(sellItem) / sellAmount;
 
@@ -48,27 +54,32 @@ public class OrderSystem extends BaseSystem {
                                 sellWallet.money += totalPrice;
 
                                 tr.products.put(buyItem, amount);
-                                System.out.println("Orders matched and products moving. BuyPrice: $" + buyPrice + " SellPrice: $" + sellPrice);
+                                System.out.println("Orders matched for " + amount + " " + buyItem +
+                                        " and products moving. BuyPrice: $" + buyPrice + " SellPrice: $" +
+                                        sellPrice + " Price: $" + price);
 
                                 //change the values of the buy and sell orders
-                                so.sell.put(buyItem, so.sell.get(buyItem) - amount);
-                                so.price.put(buyItem, so.price.get(buyItem) - sellPrice * amount);
-                                bo.buy.put(buyItem, bo.buy.get(buyItem) - amount);
-                                bo.price.put(buyItem, bo.price.get(buyItem) - buyPrice * amount);
+                                so.sell.put(buyItem, sellAmount - amount);
+                                so.price.put(buyItem, (sellPrice * sellAmount) - sellPrice * amount);
+                                bo.buy.put(buyItem, buyAmount - amount);
+                                bo.price.put(buyItem, (buyPrice * buyAmount) - buyPrice * amount);
                             }
                         }
                     }
                     if(!tr.products.isEmpty()) {
                         EventManager.emit("Transport", tr, "Transport Request From OrderSystem\n");
-                        break;
                     }
                     //remove items from the sell order if they are no longer selling any
-                    for(String item: so.sell.keySet()) {
-                        if(so.sell.get(item) == 0) {
-                            so.sell.remove(item);
-                            so.price.remove(item);
+                    List<String> items = new LinkedList<>();
+                    so.sell.forEach((k, v) -> {
+                        if(v == 0) {
+                            items.add(k);
                         }
-                    }
+                    });
+                    items.forEach(k -> {
+                        so.price.remove(k);
+                        so.sell.remove(k);
+                    });
                     if(so.sell.isEmpty()) {
                         sellEntity.removeComponent(SellOrder.class);
                     }
@@ -76,12 +87,16 @@ public class OrderSystem extends BaseSystem {
                 }
             }
             //remove items from the buy order if they are no longer buying any
-            for(String item: bo.buy.keySet()) {
-                if(bo.buy.get(item) == 0) {
-                    bo.buy.remove(item);
-                    bo.price.remove(item);
+            List<String> items = new LinkedList<>();
+            bo.buy.forEach((k, v) -> {
+                if(v == 0) {
+                    items.add(k);
                 }
-            }
+            });
+            items.forEach(k -> {
+                bo.buy.remove(k);
+                bo.price.remove(k);
+            });
             if(bo.buy.isEmpty()) {
                 buyEntity.removeComponent(BuyOrder.class);
             }

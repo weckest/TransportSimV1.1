@@ -7,6 +7,7 @@ import ecs.components.*;
 import ecs.events.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProducerSystem extends BaseSystem {
     @Override
@@ -22,7 +23,7 @@ public class ProducerSystem extends BaseSystem {
             }
 
             //flag to indicate if there are enough products to make new product
-            boolean flag = RecipeSystem.canProducer(r, i);
+            boolean flag = RecipeSystem.canProduce(r, i);
 
             //check to see if we can make the new product
             if(flag) {
@@ -51,9 +52,19 @@ public class ProducerSystem extends BaseSystem {
                     e.addComponent(sr);
                     EventManager.emit("Print", new PrintEvent(e.getId()), "ProducerSystem: ");
                 }
+            } else {
+                //not enough of something to make the recipe. so make a request for the required items
+                Map<String, Integer> missing = RecipeSystem.getMissingItems(r, i);
+                BuyRequest br = new BuyRequest();
+
+                for(String item: missing.keySet()) {
+                    br.buy.put(item, missing.get(item));
+                }
+
+                if(!br.buy.isEmpty()) {
+                    e.addComponent(br);
+                }
             }
-
-
         }
     }
 }

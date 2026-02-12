@@ -18,6 +18,13 @@ public class TransportSystem extends BaseSystem {
             //set this to the time it would take to get from source to destination in the future
             trans.eta = 3;
             e.addComponent(trans);
+
+            //remove items from the seller (loading the truck)
+            Inventory sourceInv = trans.em.getEntity(trans.sourceId).getComponent(Inventory.class);
+            sourceInv.inventory.forEach((k, v) -> {
+                sourceInv.inventory.put(k, sourceInv.inventory.get(k) - v);
+            });
+
             EventManager.emit("Print", new PrintEvent(e.getId()), "TransportSystem: ");
         });
     }
@@ -42,7 +49,7 @@ public class TransportSystem extends BaseSystem {
         Inventory destInventory = destination.getComponent(Inventory.class);
 
         for(String item: tr.products.keySet()) {
-            sourceInventory.inventory.remove(item, tr.products.get(item));
+
             destInventory.inventory.put(item, destInventory.inventory.getOrDefault(item, 0) + tr.products.get(item));
         }
     }

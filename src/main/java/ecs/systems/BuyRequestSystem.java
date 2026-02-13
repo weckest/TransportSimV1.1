@@ -37,7 +37,9 @@ public class BuyRequestSystem extends BaseSystem {
             if(bo.age == 0) {
                 e.addComponent(bo);
                 e.removeComponent(BuyRequest.class);
-                EventManager.emit("Print", new PrintEvent(e.getId()), "BuyRequestSystem: ");
+                if(em.flags.print && em.flags.buy) {
+                    EventManager.emit("Print", new PrintEvent(e.getId()), "BuyRequestSystem: ");
+                }
             }
         }
     }

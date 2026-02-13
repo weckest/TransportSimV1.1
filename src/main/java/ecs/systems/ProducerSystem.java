@@ -6,6 +6,7 @@ import ecs.EventManager;
 import ecs.components.*;
 import ecs.events.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,29 +42,24 @@ public class ProducerSystem extends BaseSystem {
 
 
                 //after making an item. make a sell request of the products that are not needed for the recipe
-                SellRequest sr = new SellRequest();
+                Map<String, Integer> sell = new HashMap<>();
                 for(String item: i.inventory.keySet()) {
                     if(!RecipeSystem.needsItem(r, item)) {
-                        sr.sell.put(item, i.inventory.get(item));
+                        sell.put(item, i.inventory.get(item));
                     }
                 }
                 //dont add the component if we arent selling anything
-                if(!sr.sell.isEmpty()) {
-                    e.addComponent(sr);
-                    EventManager.emit("Print", new PrintEvent(e.getId()), "ProducerSystem: ");
+                if(!sell.isEmpty()) {
+                    EventManager.emit("Sell", new SellEvent(sell, e.getId(), em));
+                    if(em.flags.print && em.flags.sell) {
+                        EventManager.emit("Print", new PrintEvent(e.getId()), "ProducerSystem: ");
+                    }
+
                 }
             } else {
                 //not enough of something to make the recipe. so make a request for the required items
                 Map<String, Integer> missing = RecipeSystem.getMissingItems(r, i);
-                BuyRequest br = new BuyRequest();
-
-                for(String item: missing.keySet()) {
-                    br.buy.put(item, missing.get(item));
-                }
-
-                if(!br.buy.isEmpty()) {
-                    e.addComponent(br);
-                }
+                EventManager.emit("Buy", new BuyEvent(missing, e.getId(), em));
             }
         }
     }

@@ -13,8 +13,9 @@ public abstract class BaseSystem implements ISystem {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public BaseSystem setActive(boolean active) {
         this.active = active;
+        return this;
     }
 
     public List<Entity> getActiveEntities(List<Entity> entities) {

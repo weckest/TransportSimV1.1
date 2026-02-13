@@ -22,7 +22,9 @@ public class BuyOrderSystem extends BaseSystem {
                     double newPrice = bo.price.get(item) * 1.1;
                     bo.price.put(item, newPrice);
                 }
-                EventManager.emit("Print", new PrintEvent(e.getId()), "BuyOrderSystem: ");
+                if(em.flags.print && em.flags.buy) {
+                    EventManager.emit("Print", new PrintEvent(e.getId()), "BuyOrderSystem: ");
+                }
             }
         }
     }

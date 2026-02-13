@@ -21,10 +21,11 @@ public class OutputSystem extends BaseSystem {
 
     public void printEntity(Entity e) {
         Set<Class<?>> c = e.getComponentTypes();
-        System.out.print("ID: " + e.getId() + ": ");
+        System.out.print("ID: " + e.getId() + ": \n");
         for (Class<?> cl : c) {
+            System.out.print("  ");
             System.out.print(e.getComponent(cl));
-            System.out.print(", ");
+            System.out.print(", \n");
         }
         System.out.println();
     }

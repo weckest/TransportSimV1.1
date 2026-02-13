@@ -24,8 +24,9 @@ public class TransportSystem extends BaseSystem {
             sourceInv.inventory.forEach((k, v) -> {
                 sourceInv.inventory.put(k, sourceInv.inventory.get(k) - v);
             });
-
-            EventManager.emit("Print", new PrintEvent(e.getId()), "TransportSystem: ");
+            if(trans.em.flags.print && trans.em.flags.transport) {
+                EventManager.emit("Print", new PrintEvent(e.getId()), "TransportSystem: ");
+            }
         });
     }
 
@@ -34,7 +35,9 @@ public class TransportSystem extends BaseSystem {
         List<Entity> entities = em.getEntitiesWithComponents(Transporter.class, TransportRequest.class);
         for(Entity e: entities) {
             TransportRequest tr = e.getComponent(TransportRequest.class);
-            EventManager.emit("Print", new PrintEvent(e.getId()), "Transporting: ");
+            if(em.flags.print && em.flags.transport) {
+                EventManager.emit("Print", new PrintEvent(e.getId()), "Transporting: ");
+            }
             if(--tr.eta <= 0) {
                 transferProducts(tr);
                 e.getComponent(Active.class).active = false;

@@ -59,6 +59,8 @@ public class Game {
         em.addSystem(new TransportSystem());
 
         //Event Systems
+        em.addSystem(new BuySystem().setActive(false));
+        em.addSystem(new SellSystem().setActive(false));
         em.addSystem(new BuyRequestSystem());
         em.addSystem(new SellRequestSystem());
         em.addSystem(new BuyOrderSystem());

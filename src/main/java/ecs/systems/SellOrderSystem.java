@@ -21,7 +21,9 @@ public class SellOrderSystem extends BaseSystem {
                     double newPrice = so.price.get(item) * 0.9;
                     so.price.put(item, newPrice);
                 }
-                EventManager.emit("Print", new PrintEvent(e.getId()), "SellOrderSystem: ");
+                if(em.flags.print && em.flags.sell) {
+                    EventManager.emit("Print", new PrintEvent(e.getId()), "SellOrderSystem: ");
+                }
             }
         }
     }

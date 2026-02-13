@@ -16,7 +16,7 @@ public class OrderSystem extends BaseSystem {
         List<Entity> buyEntities = em.getEntitiesWithComponents(BuyOrder.class, Wallet.class, Inventory.class);
         List<Entity> sellEntities = em.getEntitiesWithComponents(SellOrder.class, Wallet.class, Inventory.class);
         //remake this in the future to sort the product orders but price and then
-        // check highest buy price of the item against lowest sell price of the item
+        //check highest buy price of the item against lowest sell price of the item
         for(Entity buyEntity: buyEntities) {
             BuyOrder bo = buyEntity.getComponent(BuyOrder.class);
             for(String buyItem: bo.buy.keySet()) {
@@ -54,9 +54,11 @@ public class OrderSystem extends BaseSystem {
                                 sellWallet.money += totalPrice;
 
                                 tr.products.put(buyItem, amount);
-                                System.out.println("Orders matched for " + amount + " " + buyItem +
-                                        " and products moving. BuyPrice: $" + buyPrice + " SellPrice: $" +
-                                        sellPrice + " Price: $" + price);
+                                if(em.flags.print && em.flags.order) {
+                                    System.out.println("Orders matched for " + amount + " " + buyItem +
+                                            " and products moving. BuyPrice: $" + buyPrice + " SellPrice: $" +
+                                            sellPrice + " Price: $" + price);
+                                }
 
                                 //change the values of the buy and sell orders
                                 so.sell.put(buyItem, sellAmount - amount);
@@ -67,7 +69,8 @@ public class OrderSystem extends BaseSystem {
                         }
                     }
                     if(!tr.products.isEmpty()) {
-                        EventManager.emit("Transport", tr, "Transport Request From OrderSystem\n");
+                        EventManager.emit("Transport", tr,
+                                (em.flags.print && em.flags.transport) ? "Transport Request From OrderSystem\n" : "");
                     }
                     //remove items from the sell order if they are no longer selling any
                     List<String> items = new LinkedList<>();
@@ -83,7 +86,9 @@ public class OrderSystem extends BaseSystem {
                     if(so.sell.isEmpty()) {
                         sellEntity.removeComponent(SellOrder.class);
                     }
-                    EventManager.emit("Print", new PrintEvent(sellEntity.getId()), "OrderSystem Sell: ");
+                    if(em.flags.print && em.flags.sell && em.flags.order) {
+                        EventManager.emit("Print", new PrintEvent(sellEntity.getId()), "OrderSystem Sell: ");
+                    }
                 }
             }
             //remove items from the buy order if they are no longer buying any
@@ -100,7 +105,9 @@ public class OrderSystem extends BaseSystem {
             if(bo.buy.isEmpty()) {
                 buyEntity.removeComponent(BuyOrder.class);
             }
-            EventManager.emit("Print", new PrintEvent(buyEntity.getId()),"OrderSystem Buy: ");
+            if(em.flags.print && em.flags.buy && em.flags.order) {
+                EventManager.emit("Print", new PrintEvent(buyEntity.getId()), "OrderSystem Buy: ");
+            }
         }
     }
 }

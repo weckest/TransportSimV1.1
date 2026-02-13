@@ -1,6 +1,7 @@
 package ecs;
 
 import ecs.components.Active;
+import ecs.data.Flags;
 import ecs.events.PrintEvent;
 import ecs.registries.PrefabRegistry;
 import ecs.registries.ProductTypeRegistry;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EntityManager {
+    public Flags flags = new Flags();
     private int nextId = 0;
     private final List<Entity> entities = new LinkedList<>();
     private final Map<Class<? extends BaseSystem>, BaseSystem> systems = new HashMap<>();
